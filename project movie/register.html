@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register to OSM</title>
+    <!--favicon-->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+    <div class="full-page" id="MainForm">
+        <div class="lnavbar">
+            <a href="" class="logo"> <img src="logo.png"width="125" height="32" alt="OSM home" ></a>
+        </div>
+        <div class="welcome">
+          <p class="text">Welcome to a World where Cinematic Magic Comes to LIFE!</p>
+      </div>
+      <div class="wrapper">
+        <form id="main">
+            <h1> ONE STOP MOVIE</h1>
+            <div class="input-box">
+                <input type="text" id="username" placeholder="Username" required>
+                <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="text" id="email" placeholder="Email" required>
+                <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Password" required>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+
+            <button type="submit" id="register" class="btn">Register</button>
+
+            <div class="login-link">
+                <p>Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    </div>
+    
+    <!--firebasegoogle--> 
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+apiKey: "AIzaSyDAxsDErdYP2L_XKMyMQyoV011iNvGRuog",
+authDomain: "one-stop-movie-68a73.firebaseapp.com",
+projectId: "one-stop-movie-68a73",
+storageBucket: "one-stop-movie-68a73.appspot.com",
+messagingSenderId: "914114288518",
+appId: "1:914114288518:web:3707185ce70e9f4019aa07"
+};
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db=getDatabase();
+      const auth=getAuth(app);
+      
+      let Email = document.getElementById("email");
+        let Password = document.getElementById("password");
+        let Username = document.getElementById("username");
+        let Main = document.getElementById("main");
+
+        let RegisterUser = evt => {
+
+            evt.preventDefault();
+
+            createUserWithEmailAndPassword(auth, Email.value, Password.value)
+            .then((credentials) => {
+
+                set(ref(db, 'UserAuthList/' + credentials.user.uid), {
+                    username: Username.value,
+                    email: Email.value
+                });
+                alert('New User Created. Now go to Login Page to Enter the amaging Website.');
+
+            })
+            .catch((error) => {
+
+            alert(error.message);
+
+            })
+        }
+
+        Main.addEventListener('submit', RegisterUser);
+    </script>
+</body>
+</html>
